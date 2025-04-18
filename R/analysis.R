@@ -214,8 +214,9 @@ netAnalysis_computeCentrality <- function(object = NULL, slot.name = "netP", net
     my.sapply <- ifelse(
       test = future::nbrOfWorkers() == 1,
       yes = pbapply::pbsapply,
-      no = future.apply::future_sapply
-    )
+     no = function(..., future.seed = TRUE) { 
+    future.apply::future_sapply(..., future.seed = future.seed)
+  }
     centr.all = my.sapply(
       X = 1:nrun,
       FUN = function(x) {
